@@ -1,0 +1,284 @@
+<!-- ... existing code ... -->
+        <button type="button" id="hdr-btn-pdf" onclick="openExecutivePdfPreview()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-md">
+          <span>📄</span><span>تصدير تقرير PDF للمدير</span>
+        </button>
+
+        <button type="button" id="hdr-btn-share" onclick="switchMainView('data', 'share')" class="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-extrabold flex items-center gap-1.5 shadow-sm">
+          <span>🌐</span><span>مشاركة ومزامنة الزملاء</span>
+        </button>
+      </div>
+    </header>
+<!-- ... existing code ... -->
+          <button type="button" onclick="switchMainView('data', 'users')" id="nav-users" class="w-full text-right px-3 py-2 rounded-lg text-xs font-bold text-emerald-700 hover:bg-emerald-50 flex items-center gap-2">
+            <span>👥</span><span>إدارة المستخدمين والصلاحيات</span>
+          </button>
+          <button type="button" onclick="switchMainView('data', 'share')" id="nav-share" class="w-full text-right px-3 py-2 rounded-lg text-xs font-bold text-sky-700 hover:bg-sky-50 flex items-center gap-2">
+            <span>🌐</span><span>المشاركة والمزامنة السحابية</span>
+          </button>
+        </div>
+      </div>
+<!-- ... existing code ... -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex flex-wrap gap-2">
+          <button type="button" onclick="switchDataTab('upload')" id="tab-btn-upload" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white">📤 رفع ملفات الإكسل والقوالب</button>
+          <button type="button" onclick="switchDataTab('directory')" id="tab-btn-directory" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">🗺️ قائمة الفروع والمناطق</button>
+          <button type="button" onclick="switchDataTab('rules')" id="tab-btn-rules" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">⚙️ قواعد الكبستي وخطوط السير</button>
+          <button type="button" onclick="switchDataTab('history')" id="tab-btn-history" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200">🕒 سجل الحفظ والتاريخ</button>
+          <button type="button" onclick="switchDataTab('users')" id="tab-btn-users" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-emerald-50 text-emerald-800 hover:bg-emerald-100">👥 إدارة المستخدمين والصلاحيات</button>
+          <button type="button" onclick="switchDataTab('share')" id="tab-btn-share" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-sky-50 text-sky-800 hover:bg-sky-100">🌐 المشاركة والمزامنة السحابية</button>
+        </div>
+        <button type="button" onclick="switchMainView('dashboard')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold">← العودة إلى لوحة المعلومات</button>
+      </div>
+<!-- ... existing code ... -->
+            <tbody id="users-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- تبويب 6: المشاركة والمزامنة السحابية مع الزملاء -->
+      <div id="data-tab-share" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
+          <div class="border-b border-slate-200 pb-4">
+            <h3 class="text-base md:text-lg font-black text-slate-900">🚀 خطوات تشغيل اللوحة كرابط مباشر ومشاركة البيانات مع الزملاء</h3>
+            <p class="text-xs text-slate-500 mt-1">اختر الطريقة الأنسب لفريق العمل لتشغيل اللوحة ومزامنة البيانات المحدثة يومياً</p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-800 text-white text-xs font-black">الخطوة 1 • استخراج رابط مباشر</div>
+              <h4 class="text-sm font-black text-slate-900">نشر اللوحة على الإنترنت مجاناً</h4>
+              <ol class="text-xs text-slate-700 space-y-1.5 list-decimal mr-4 font-semibold leading-relaxed">
+                <li>اضغط على زر <b>"تنزيل ملف اللوحة (index.html)"</b> بالأسفل.</li>
+                <li>افتح موقع <b>app.netlify.com/drop</b> واسحب الملف إليه.</li>
+                <li>سيعطيك فوراً رابطاً مباشراً (مثل <code>bassami-fleet.netlify.app</code>) يعمل على الجوال والكمبيوتر.</li>
+              </ol>
+              <button type="button" onclick="downloadStandaloneHtml()" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-black shadow">⬇️ تنزيل ملف اللوحة (index.html)</button>
+            </div>
+
+            <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 space-y-2.5">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-600 text-white text-xs font-black">الطريقة أ • مشاركة سريعة (واتساب)</div>
+              <h4 class="text-sm font-black text-emerald-950">تصدير / استيراد حزمة البيانات المحدثة</h4>
+              <p class="text-xs text-emerald-900 font-semibold leading-relaxed">بعد رفعك لملفات الإكسل وتحديث اللوحة، صدّر ملف الحزمة وأرسله في قروب العمل، وبضغطة زر يحمّله الزملاء عندهم:</p>
+              <div class="flex flex-col gap-2 pt-1">
+                <button type="button" onclick="exportFullDataBundle()" class="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm">📤 تصدير حزمة التحديث للزملاء (.json)</button>
+                <label class="w-full text-center py-2 rounded-xl bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-black cursor-pointer">
+                  <span>📥 استيراد تحديث المدير (.json)</span>
+                  <input type="file" accept=".json" onchange="importFullDataBundle(event)" class="hidden" />
+                </label>
+              </div>
+            </div>
+
+            <div class="bg-sky-50/70 border border-sky-200 rounded-2xl p-4 space-y-2.5">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-sky-600 text-white text-xs font-black">الطريقة ب • المزامنة السحابية الحية</div>
+              <h4 class="text-sm font-black text-sky-950">ربط السحابة (JSONBin.io) للتحديث التلقائي</h4>
+              <p class="text-xs text-sky-900 font-semibold leading-relaxed">أنشئ حساباً مجانياً في <b>jsonbin.io</b> وضع (Bin ID) و (Master Key) ليتم رفع التحديثات وجلبها تلقائياً لجميع الزملاء:</p>
+              <div class="space-y-2">
+                <input type="text" id="cloud-bin-id" placeholder="Bin ID (مثال: 673f8a...)" class="w-full px-3 py-1.5 rounded-lg border border-sky-300 text-xs font-bold bg-white" />
+                <input type="password" id="cloud-api-key" placeholder="X-Master-Key ($2a$10$...)" class="w-full px-3 py-1.5 rounded-lg border border-sky-300 text-xs font-bold bg-white" />
+                <div class="flex gap-1.5">
+                  <button type="button" onclick="saveAndPushCloudSync()" class="flex-1 py-2 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-[11px] font-black">☁️ حفظ ورفع للسحابة</button>
+                  <button type="button" onclick="pullFromCloudSync(true)" class="flex-1 py-2 rounded-lg bg-blue-800 hover:bg-blue-900 text-white text-[11px] font-black">🔄 جلب آخر تحديث</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+<!-- ... existing code ... -->
+      MANUAL_PLANS: 'fleet_manual_branch_plans_v11',
+      USERS_LIST: 'fleet_system_users_v11',
+      CURRENT_SESSION: 'fleet_active_session_v11',
+      CLOUD_CFG: 'fleet_cloud_sync_cfg_v11'
+    };
+<!-- ... existing code ... -->
+      const sideEl = document.getElementById('sidebar-last-saved');
+      if (sideEl) sideEl.textContent = `آخر حفظ: ${payload.savedAt}`;
+      pushToCloudSilently();
+    }
+<!-- ... existing code ... -->
+    function switchDataTab(tab) {
+      if (tab === 'users' && !isCurrentUserAdmin()) {
+        return showToast('إدارة المستخدمين متاحة لحساب الأدمن فقط', 'error');
+      }
+      ['upload', 'directory', 'rules', 'history', 'users', 'share'].forEach(t => {
+        const panel = document.getElementById(`data-tab-${t}`);
+        if (panel) panel.classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) {
+          btn.className = t === tab
+            ? 'px-4 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white'
+            : 'px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 hover:bg-slate-200';
+        }
+      });
+      if (tab === 'directory') renderDirectorySettings();
+      if (tab === 'rules') renderSmartRulesSettings();
+      if (tab === 'history') renderHistoryTable();
+      if (tab === 'users') renderUsersManagement();
+      if (tab === 'share') loadCloudConfigInputs();
+    }
+
+    function downloadStandaloneHtml() {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('تم تنزيل ملف index.html الجاهز للنشر على Netlify أو GitHub Pages');
+    }
+
+    function exportFullDataBundle() {
+      const bundle = {
+        exportedAt: new Date().toLocaleString('ar-SA'),
+        refDate: state.refDate,
+        tripsRaw: state.tripsRaw,
+        intlRaw: state.intlRaw,
+        carsRaw: state.carsRaw,
+        extRaw: state.extRaw,
+        fileMeta: state.fileMeta,
+        intlEdits: state.intlEdits,
+        extEdits: state.extEdits,
+        branchDirectory: state.branchDirectory,
+        capacityRules: state.capacityRules,
+        routeRules: state.routeRules,
+        manualBranchPlans: state.manualBranchPlans,
+        users: state.users
+      };
+      const blob = new Blob([JSON.stringify(bundle)], { type: 'application/json;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `تحديث_بيانات_الأسطول_${state.refDate}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('تم تصدير حزمة البيانات بنجاح! أرسل الملف للزملاء للاستيراد.');
+    }
+
+    function importFullDataBundle(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          await applySyncedBundle(data);
+          event.target.value = '';
+          switchMainView('dashboard');
+          showToast(`تم تحميل تحديث البيانات بنجاح (${data.exportedAt || ''})!`);
+        } catch (err) {
+          showToast('ملف التحديث غير صالح!', 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    async function applySyncedBundle(data) {
+      if (!data || typeof data !== 'object') return;
+      if (data.refDate) {
+        state.refDate = data.refDate;
+        const refInput = document.getElementById('ref-date-input');
+        if (refInput) refInput.value = data.refDate;
+      }
+      if (Array.isArray(data.tripsRaw)) state.tripsRaw = mapTripsRows(data.tripsRaw.map(x => x.rawRow || x));
+      if (Array.isArray(data.intlRaw)) state.intlRaw = mapIntlRows(data.intlRaw.map(x => x.rawRow || x));
+      if (Array.isArray(data.carsRaw)) state.carsRaw = mapCarsRows(data.carsRaw.map(x => x.rawRow || x));
+      if (Array.isArray(data.extRaw)) state.extRaw = mapExtRows(data.extRaw.map(x => x.rawRow || x));
+      if (data.fileMeta) state.fileMeta = data.fileMeta;
+      if (data.intlEdits) { state.intlEdits = data.intlEdits; await dbSet(STORAGE_KEYS.INTL_EDITS, state.intlEdits); }
+      if (data.extEdits) { state.extEdits = data.extEdits; await dbSet(STORAGE_KEYS.EXT_EDITS, state.extEdits); }
+      if (Array.isArray(data.branchDirectory) && data.branchDirectory.length) { state.branchDirectory = data.branchDirectory; await dbSet(STORAGE_KEYS.BRANCH_DIR, state.branchDirectory); }
+      if (Array.isArray(data.capacityRules) && data.capacityRules.length) { state.capacityRules = data.capacityRules; await dbSet(STORAGE_KEYS.CAP_RULES, state.capacityRules); }
+      if (Array.isArray(data.routeRules) && data.routeRules.length) { state.routeRules = data.routeRules; await dbSet(STORAGE_KEYS.ROUTE_RULES, state.routeRules); }
+      if (data.manualBranchPlans) { state.manualBranchPlans = data.manualBranchPlans; await dbSet(STORAGE_KEYS.MANUAL_PLANS, state.manualBranchPlans); }
+      if (Array.isArray(data.users) && data.users.length) { state.users = data.users; await dbSet(STORAGE_KEYS.USERS_LIST, state.users); }
+
+      updateUploadStatusLabels();
+      processAllData();
+      const payload = {
+        savedAt: data.exportedAt || new Date().toLocaleString('ar-SA'),
+        tripsRaw: state.tripsRaw,
+        intlRaw: state.intlRaw,
+        carsRaw: state.carsRaw,
+        extRaw: state.extRaw,
+        fileMeta: state.fileMeta
+      };
+      await dbSet(STORAGE_KEYS.ACTIVE_DATA, payload);
+    }
+
+    function loadCloudConfigInputs() {
+      const cfg = safeParseStorage(STORAGE_KEYS.CLOUD_CFG, { binId: '', apiKey: '' });
+      const bEl = document.getElementById('cloud-bin-id');
+      const kEl = document.getElementById('cloud-api-key');
+      if (bEl) bEl.value = cfg.binId || '';
+      if (kEl) kEl.value = cfg.apiKey || '';
+    }
+
+    async function saveAndPushCloudSync() {
+      const binId = (document.getElementById('cloud-bin-id')?.value || '').trim();
+      const apiKey = (document.getElementById('cloud-api-key')?.value || '').trim();
+      if (!binId || !apiKey) return showToast('يرجى إدخال Bin ID و Master Key أولاً', 'error');
+      localStorage.setItem(STORAGE_KEYS.CLOUD_CFG, JSON.stringify({ binId, apiKey }));
+      await pushToCloudSilently(true);
+    }
+
+    async function pushToCloudSilently(notify = false) {
+      const cfg = safeParseStorage(STORAGE_KEYS.CLOUD_CFG, null);
+      if (!cfg || !cfg.binId || !cfg.apiKey || !canCurrentUserEdit()) return;
+      try {
+        const bundle = {
+          exportedAt: new Date().toLocaleString('ar-SA'),
+          refDate: state.refDate,
+          tripsRaw: state.tripsRaw,
+          intlRaw: state.intlRaw,
+          carsRaw: state.carsRaw,
+          extRaw: state.extRaw,
+          fileMeta: state.fileMeta,
+          intlEdits: state.intlEdits,
+          extEdits: state.extEdits,
+          branchDirectory: state.branchDirectory,
+          capacityRules: state.capacityRules,
+          routeRules: state.routeRules,
+          manualBranchPlans: state.manualBranchPlans,
+          users: state.users
+        };
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${cfg.binId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'X-Master-Key': cfg.apiKey },
+          body: JSON.stringify(bundle)
+        });
+        if (res.ok && notify) showToast('☁️ تم رفع ومزامنة كافة البيانات على السحابة بنجاح!');
+      } catch (e) {
+        if (notify) showToast('تعذر الاتصال بالسحابة، تأكد من صحة المفاتيح والإنترنت', 'error');
+      }
+    }
+
+    async function pullFromCloudSync(notify = false) {
+      const cfg = safeParseStorage(STORAGE_KEYS.CLOUD_CFG, null);
+      if (!cfg || !cfg.binId || !cfg.apiKey) {
+        if (notify) showToast('يرجى إدخال إعدادات السحابة أولاً', 'error');
+        return;
+      }
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${cfg.binId}/latest`, {
+          headers: { 'X-Master-Key': cfg.apiKey }
+        });
+        if (!res.ok) throw new Error('Cloud read error');
+        const json = await res.json();
+        if (json && json.record) {
+          await applySyncedBundle(json.record);
+          if (notify) showToast('☁️ تم جلب أحدث البيانات المحدثة من السحابة!');
+        }
+      } catch (e) {
+        if (notify) showToast('تعذر جلب البيانات من السحابة', 'error');
+      }
+    }
+<!-- ... existing code ... -->
+        updateUploadStatusLabels();
+        processAllData();
+        applyUserPermissionsUI();
+        pullFromCloudSync(false);
+      } catch (err) {
+<!-- ... existing code ... -->
