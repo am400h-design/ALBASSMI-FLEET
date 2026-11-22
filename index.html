@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>مجموعة أعمال البسامي الدولية | لوحة معلومات إدارة الأسطول ومتابعة الفروع</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -11,14 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     * { font-family: 'Cairo', sans-serif !important; box-sizing: border-box; }
-    body { margin: 0; background-color: #f8fafc; color: #0f172a; }
+    html, body { margin: 0; padding: 0; width: 100%; max-width: 100vw; overflow-x: hidden; background-color: #f8fafc; color: #0f172a; }
     .num-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 1.65rem;
-      padding: 0.12rem 0.42rem;
-      border-radius: 0.4rem;
+      min-width: 1.55rem;
+      padding: 0.1rem 0.38rem;
+      border-radius: 0.38rem;
       font-size: 11px;
       font-weight: 800;
       cursor: pointer;
@@ -26,8 +26,9 @@
       transition: transform 0.12s ease, filter 0.12s ease;
     }
     .num-pill:hover { transform: scale(1.07); filter: brightness(0.95); }
-    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 9999px; }
+    .overflow-x-auto { -webkit-overflow-scrolling: touch; max-width: 100%; }
     @keyframes rtlTickerScroll {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
@@ -51,6 +52,101 @@
     body.read-only-mode .edit-only-action {
       display: none !important;
     }
+
+    /* تحسينات شاملة لشاشات الجوال */
+    @media (max-width: 768px) {
+      #sidebar {
+        position: fixed !important;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 265px !important;
+        max-width: 82vw !important;
+        z-index: 60 !important;
+        box-shadow: -8px 0 25px rgba(15, 23, 42, 0.25);
+      }
+      #sidebar.mobile-closed {
+        display: none !important;
+      }
+      header {
+        padding: 0.55rem 0.75rem !important;
+        gap: 0.5rem !important;
+      }
+      header h1 {
+        font-size: 13px !important;
+        line-height: 1.3 !important;
+      }
+      header button, header input[type="date"] {
+        font-size: 10px !important;
+        padding: 0.35rem 0.55rem !important;
+      }
+      main {
+        padding: 0.6rem !important;
+        gap: 0.75rem !important;
+      }
+      section {
+        border-radius: 0.85rem !important;
+      }
+      #sec-fleet-summary {
+        padding: 0.75rem !important;
+      }
+      #sec-fleet-summary h2,
+      #sec-arrival h2,
+      #sec-intl h2,
+      #sec-external h2,
+      #sec-branches h2 {
+        font-size: 12.5px !important;
+        line-height: 1.35 !important;
+      }
+      #sec-fleet-summary .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.5rem !important;
+      }
+      #sec-fleet-summary .grid > div:first-child {
+        grid-column: span 2 / span 2;
+      }
+      #kpi-total-fleet,
+      #kpi-total-trailers,
+      #kpi-total-flatbeds,
+      #kpi-intl-fleet,
+      #kpi-local-fleet {
+        font-size: 1.15rem !important;
+        margin: 0.15rem 0 !important;
+      }
+      #card-in-branch,
+      #card-arr-today,
+      #card-total-cars,
+      #card-total-deficit {
+        font-size: 1.05rem !important;
+      }
+      table {
+        font-size: 10px !important;
+      }
+      th, td {
+        padding: 0.3rem 0.35rem !important;
+      }
+      .num-pill {
+        min-width: 1.3rem !important;
+        padding: 0.08rem 0.28rem !important;
+        font-size: 9.5px !important;
+      }
+      #branches-table-body td:first-child,
+      #branches-table-foot td:first-child {
+        position: sticky;
+        right: 0;
+        z-index: 5;
+        background-color: #ffffff;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.06);
+        min-width: 105px !important;
+        max-width: 120px !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      #branches-table-foot td:first-child {
+        background-color: #1e293b !important;
+      }
+    }
+
     @media print {
       @page { size: A4 landscape; margin: 6mm; }
       body { background: #fff !important; }
@@ -112,13 +208,13 @@
   </div>
 
   <!-- حاوية الإشعارات الفورية -->
-  <div id="toast-container" class="no-print fixed bottom-5 left-5 z-50 flex flex-col gap-2 max-w-md"></div>
+  <div id="toast-container" class="no-print fixed bottom-4 left-4 z-50 flex flex-col gap-2 max-w-[90vw] md:max-w-md"></div>
+
+  <!-- خلفية إغلاق القائمة الجانبية على الجوال -->
+  <div id="mobile-sidebar-backdrop" onclick="closeMobileSidebar()" class="no-print hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs md:hidden"></div>
 
   <!-- القائمة الجانبية اليمنى -->
-  <aside id="sidebar" class="no-print w-72 bg-white text-slate-800 flex flex-col shrink-0 border-l border-slate-200 shadow-lg transition-all duration-200 z-30">
-    <div class="p-4 border-b border-slate-200 bg-gradient-to-b from-emerald-50/70 to-white space-y-2.5">
-      <div class="bg-white rounded-xl px-3 py-2 flex items-center justify-center shadow-sm border border-slate-200">
-        <svg viewBox="0 0 280 76" class="h-10 w-auto" xmlns="http://www.w3.org/2000/svg">
+  <aside id="sidebar" class="no-print mobile-closed md:flex w-72 bg-white text-slate-800 flex-col shrink-0 border-l border-slate-200 shadow-lg transition-all duration-200 z-30">
           <rect x="6" y="8" width="20" height="58" fill="#009e49"/>
           <circle cx="34" cy="24" r="16" fill="none" stroke="#1e1e1e" stroke-width="8"/>
           <path d="M24 44 C24 35, 45 35, 45 47 C45 59, 14 59, 14 51" fill="none" stroke="#009e49" stroke-width="8" stroke-linecap="round"/>
@@ -4475,10 +4571,29 @@
     }
 
     function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('hidden');
+      const sb = document.getElementById('sidebar');
+      const backdrop = document.getElementById('mobile-sidebar-backdrop');
+      if (!sb) return;
+      if (window.innerWidth <= 768) {
+        const isClosed = sb.classList.contains('mobile-closed');
+        sb.classList.toggle('mobile-closed', !isClosed);
+        if (backdrop) backdrop.classList.toggle('hidden', !isClosed);
+      } else {
+        sb.classList.toggle('hidden');
+      }
+    }
+
+    function closeMobileSidebar() {
+      if (window.innerWidth <= 768) {
+        const sb = document.getElementById('sidebar');
+        const backdrop = document.getElementById('mobile-sidebar-backdrop');
+        if (sb) sb.classList.add('mobile-closed');
+        if (backdrop) backdrop.classList.add('hidden');
+      }
     }
 
     function jumpToSection(id) {
+      closeMobileSidebar();
       switchMainView('dashboard');
       setTimeout(() => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
