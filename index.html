@@ -215,6 +215,9 @@
 
   <!-- القائمة الجانبية اليمنى -->
   <aside id="sidebar" class="no-print mobile-closed md:flex w-72 bg-white text-slate-800 flex-col shrink-0 border-l border-slate-200 shadow-lg transition-all duration-200 z-30">
+    <div class="p-4 border-b border-slate-200 bg-gradient-to-l from-emerald-50/70 to-white flex flex-col items-center gap-2">
+      <div class="bg-white rounded-xl px-3 py-2 border border-slate-200 shadow-xs">
+        <svg viewBox="0 0 280 76" class="h-11 w-auto" xmlns="http://www.w3.org/2000/svg">
           <rect x="6" y="8" width="20" height="58" fill="#009e49"/>
           <circle cx="34" cy="24" r="16" fill="none" stroke="#1e1e1e" stroke-width="8"/>
           <path d="M24 44 C24 35, 45 35, 45 47 C45 59, 14 59, 14 51" fill="none" stroke="#009e49" stroke-width="8" stroke-linecap="round"/>
@@ -616,7 +619,7 @@
         </div>
       </section>
 
-      <!-- القسم 4: متابعة الفروع وحساب الاحتياج الصافي (مضغوط ليظهر كاملاً بعرض الشاشة مع إبراز العناوين والإجمالي) -->
+      <!-- القسم 4: متابعة الفروع وحساب الاحتياج الصافي -->
       <section id="sec-branches" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="bg-gradient-to-l from-emerald-50 to-slate-50 text-slate-900 border-b border-slate-200 px-5 py-3.5 flex flex-wrap items-center justify-between gap-3">
           <div class="flex items-center gap-3">
@@ -774,14 +777,26 @@
           <h3 class="text-sm md:text-base font-black">2. الشاحنات المتأخرة (تاريخ الوصول المتوقع قبل تاريخ اليوم — في الطريق أو ترانزيت) — مرتبة حسب فرع الوصول</h3>
           <span id="delayed-trucks-badge" class="px-3 py-1 rounded-full bg-amber-500 text-white text-xs font-black">0 شاحنة</span>
         </div>
+        <!-- شريط واتساب السائقين للشاحنات المتأخرة -->
+        <div class="bg-emerald-50/90 border-b border-emerald-200 px-4 py-3 flex flex-wrap items-center gap-2.5">
+          <span class="text-xs font-black text-emerald-900">💬 رسالة واتساب للسائقين:</span>
+          <input type="text" id="delayed-wa-msg" value="السلام عليكم كابتن {السائق}، نأمل إفادتنا بموقع الشاحنة ({الشاحنة}) المتجهة إلى فرع {الفرع} وموعد الوصول." placeholder="اكتب نص الرسالة... (يمكنك استخدام {السائق} و {الشاحنة} و {الفرع})" class="flex-1 min-w-[240px] bg-white border border-emerald-300 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600" />
+          <span id="delayed-wa-selected-count" class="px-2.5 py-1 rounded-lg bg-white border border-emerald-300 text-emerald-900 text-xs font-black">المحدد: 0</span>
+          <button type="button" onclick="sendBulkDelayedWhatsApp()" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm flex items-center gap-1.5">
+            <span>📲</span><span>إرسال واتساب للمحددين</span>
+          </button>
+        </div>
         <div class="overflow-x-auto">
           <table class="w-full text-xs border-collapse">
             <thead>
               <tr class="bg-slate-100 text-slate-800 border-b border-slate-300 font-black">
+                <th class="py-3 px-3 text-center w-10">
+                  <input type="checkbox" id="delayed-wa-select-all" onchange="toggleAllDelayedWa(this.checked)" class="w-4 h-4 accent-emerald-600 cursor-pointer" title="تحديد الكل" />
+                </th>
                 <th class="py-3 px-4 text-right w-12">#</th>
                 <th class="py-3 px-4 text-right">كود الشاحنة</th>
                 <th class="py-3 px-4 text-right">اسم السائق</th>
-                <th class="py-3 px-4 text-center">رقم جوال السائق</th>
+                <th class="py-3 px-4 text-center">رقم جوال السائق وواتساب</th>
                 <th class="py-3 px-4 text-right">فرع الانطلاق</th>
                 <th class="py-3 px-4 text-right">فرع الوصول</th>
                 <th class="py-3 px-4 text-center">تاريخ الوصول المتوقع</th>
@@ -1367,6 +1382,36 @@
     let currentModalBranch = '';
     let currentModalTruckType = '';
     let selectedIncompleteIndices = new Set();
+    let currentFilteredDelayedTrucks = [];
+    let selectedDelayedWaIndices = new Set();
+    let selectedModalWaIndices = new Set();
+
+    function formatSaudiWaPhone(rawPhone) {
+      let digits = String(rawPhone ?? '')
+        .replace(/[٠-٩]/g, d => '0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(d)])
+        .replace(/\D/g, '');
+      if (!digits || digits.length < 7) return '';
+      if (digits.startsWith('00')) digits = digits.slice(2);
+      if (digits.startsWith('05') && digits.length === 10) return '966' + digits.slice(1);
+      if (digits.startsWith('5') && digits.length === 9) return '966' + digits;
+      return digits;
+    }
+
+    function buildPersonalizedWaText(template, driverName, truckCode, branchName) {
+      const msg = (template || '').trim() || 'السلام عليكم كابتن {السائق}، نأمل التواصل بخصوص الشاحنة ({الشاحنة}) - {الفرع}.';
+      return msg
+        .replace(/\{السائق\}/g, driverName && driverName !== '-' ? driverName : 'الكريم')
+        .replace(/\{الشاحنة\}/g, truckCode || '-')
+        .replace(/\{الفرع\}/g, branchName || '-');
+    }
+
+    function openSingleWhatsApp(rawPhone, driverName, truckCode, branchName, inputId) {
+      const phone = formatSaudiWaPhone(rawPhone);
+      if (!phone) return showToast('رقم جوال السائق غير صالح أو غير مسجل', 'error');
+      const tpl = document.getElementById(inputId)?.value || '';
+      const text = buildPersonalizedWaText(tpl, driverName, truckCode, branchName);
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+    }
 
     function normText(v) {
       return String(v ?? '')
@@ -2684,6 +2729,12 @@
         ? delayedTrucks
         : delayedTrucks.filter(t => (t.destBranch || 'غير محدد') === selectedTruckBranch);
 
+      currentFilteredDelayedTrucks = filteredTrucks;
+      selectedDelayedWaIndices.clear();
+      const selAllEl = document.getElementById('delayed-wa-select-all');
+      if (selAllEl) selAllEl.checked = false;
+      updateDelayedWaSelectedBadge();
+
       const totalFilteredCarsQty = filteredCars.reduce((s, c) => s + (c.qty || 1), 0);
       document.getElementById('delayed-cars-badge').textContent = `${totalFilteredCarsQty} سيارة`;
       document.getElementById('delayed-trucks-badge').textContent = `${filteredTrucks.length} شاحنة`;
@@ -2735,33 +2786,46 @@
 
       const trucksBody = document.getElementById('delayed-trucks-body');
       if (!filteredTrucks.length) {
-        trucksBody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400 font-bold">لا توجد شاحنات متأخرة (في الطريق / ترانزيت) مطابقة للفلتر المحدد</td></tr>`;
+        trucksBody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-400 font-bold">لا توجد شاحنات متأخرة (في الطريق / ترانزيت) مطابقة للفلتر المحدد</td></tr>`;
       } else {
         const tGroups = new Map();
-        filteredTrucks.forEach(t => {
+        filteredTrucks.forEach((t, globalIdx) => {
           const br = t.destBranch || 'غير محدد';
           if (!tGroups.has(br)) tGroups.set(br, []);
-          tGroups.get(br).push(t);
+          tGroups.get(br).push({ t, globalIdx });
         });
 
         let tHtml = '';
-        tGroups.forEach((items, destBranchName) => {
+        tGroups.forEach((groupItems, destBranchName) => {
           tHtml += `
             <tr class="bg-amber-100/80 text-amber-950 border-y border-amber-200">
-              <td colspan="8" class="py-2.5 px-4 font-black text-xs">
+              <td colspan="9" class="py-2.5 px-4 font-black text-xs">
                 <span class="text-amber-800">📍 فرع الوصول: ${destBranchName}</span>
-                <span class="text-slate-600 mr-3">(عدد الشاحنات المتأخرة: ${items.length})</span>
+                <span class="text-slate-600 mr-3">(عدد الشاحنات المتأخرة: ${groupItems.length})</span>
               </td>
             </tr>
           `;
-          items.forEach((t, idx) => {
+          groupItems.forEach(({ t, globalIdx }, idx) => {
             const rawStatus = String(getField(t.rawRow, ['حالة الرحلة', 'حاله الرحله', 'الحالة']) || t.status).trim();
+            const safeDriver = (t.driverName || '-').replace(/'/g, "\\'");
+            const safeTruck = (t.truckCode || '-').replace(/'/g, "\\'");
+            const safeBranch = (t.destBranch || '-').replace(/'/g, "\\'");
+            const safePhone = (t.driverPhone || '').replace(/'/g, "\\'");
+            const hasPhone = Boolean(formatSaudiWaPhone(t.driverPhone));
             tHtml += `
               <tr class="hover:bg-amber-50/40">
+                <td class="py-2.5 px-3 text-center">
+                  <input type="checkbox" ${hasPhone ? '' : 'disabled'} onchange="toggleDelayedWaItem(${globalIdx}, this.checked)" class="delayed-wa-cb w-4 h-4 accent-emerald-600 cursor-pointer" />
+                </td>
                 <td class="py-2.5 px-4 font-bold text-slate-400">${idx + 1}</td>
                 <td class="py-2.5 px-4 font-black text-slate-950">${t.truckCode}</td>
                 <td class="py-2.5 px-4 font-bold text-slate-800">${t.driverName}</td>
-                <td class="py-2.5 px-4 text-center font-bold text-blue-800">${t.driverPhone}</td>
+                <td class="py-2.5 px-4 text-center">
+                  <div class="inline-flex items-center justify-center gap-1.5">
+                    <span class="font-bold text-blue-800" dir="ltr">${t.driverPhone}</span>
+                    ${hasPhone ? `<button type="button" onclick="openSingleWhatsApp('${safePhone}', '${safeDriver}', '${safeTruck}', '${safeBranch}', 'delayed-wa-msg')" class="px-2 py-0.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black shadow-xs transition">💬 واتساب</button>` : ''}
+                  </div>
+                </td>
                 <td class="py-2.5 px-4 font-bold text-slate-700">${t.startBranch}</td>
                 <td class="py-2.5 px-4 font-extrabold text-blue-700">${t.destBranch}</td>
                 <td class="py-2.5 px-4 text-center font-black text-rose-700">${t.arrivalDate}</td>
@@ -2772,6 +2836,49 @@
         });
         trucksBody.innerHTML = tHtml;
       }
+    }
+
+    function toggleDelayedWaItem(idx, checked) {
+      if (checked) selectedDelayedWaIndices.add(idx);
+      else selectedDelayedWaIndices.delete(idx);
+      updateDelayedWaSelectedBadge();
+    }
+
+    function toggleAllDelayedWa(checked) {
+      selectedDelayedWaIndices.clear();
+      document.querySelectorAll('.delayed-wa-cb:not(:disabled)').forEach((cb, i) => {
+        cb.checked = checked;
+      });
+      if (checked) {
+        currentFilteredDelayedTrucks.forEach((t, idx) => {
+          if (formatSaudiWaPhone(t.driverPhone)) selectedDelayedWaIndices.add(idx);
+        });
+      }
+      updateDelayedWaSelectedBadge();
+    }
+
+    function updateDelayedWaSelectedBadge() {
+      const el = document.getElementById('delayed-wa-selected-count');
+      if (el) el.textContent = `المحدد: ${selectedDelayedWaIndices.size}`;
+    }
+
+    function sendBulkDelayedWhatsApp() {
+      if (!selectedDelayedWaIndices.size) {
+        return showToast('يرجى تحديد سائق واحد على الأقل من القائمة أولاً', 'error');
+      }
+      const tpl = document.getElementById('delayed-wa-msg')?.value || '';
+      const indices = Array.from(selectedDelayedWaIndices);
+      indices.forEach((idx, seq) => {
+        const t = currentFilteredDelayedTrucks[idx];
+        if (!t) return;
+        const phone = formatSaudiWaPhone(t.driverPhone);
+        if (!phone) return;
+        const text = buildPersonalizedWaText(tpl, t.driverName, t.truckCode, t.destBranch);
+        setTimeout(() => {
+          window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+        }, seq * 350);
+      });
+      showToast(`جاري فتح محادثات واتساب لـ ${indices.length} سائق...`);
     }
 
     function exportDelayedExcel() {
@@ -2819,29 +2926,101 @@
         body.innerHTML = `<div class="py-12 text-center text-slate-400 font-bold text-sm">لا توجد سجلات مطابقة للعرض</div>`;
         return;
       }
+      selectedModalWaIndices.clear();
       const rawRows = records.map(r => r.rawRow || r);
       const colsSet = new Set();
       rawRows.forEach(row => Object.keys(row).forEach(k => colsSet.add(k)));
       const cols = Array.from(colsSet);
 
+      const enriched = records.map((rec, idx) => {
+        const raw = rec.rawRow || rec;
+        const phoneVal = rec.driverPhone || getField(raw, ['رقم الجوال', 'جوال السائق', 'رقم جوال السائق', 'الهاتف', 'الجوال']);
+        const driverVal = rec.driverName || getField(raw, ['اسم السائق', 'إسم السائق', 'السائق']) || '-';
+        const truckVal = rec.truckCode || getField(raw, ['كود الشاحنة', 'كود الشاحنه', 'كود المركبة', 'رقم الشاحنة']) || '-';
+        const branchVal = rec.destBranch || rec.bayan || getField(raw, ['فرع الوصول', 'الى فرع', 'إلى فرع', 'البيان', 'الدولة']) || '-';
+        const waPhone = formatSaudiWaPhone(phoneVal);
+        return { raw, idx, phoneVal: String(phoneVal || '').trim(), driverVal: String(driverVal).trim(), truckVal: String(truckVal).trim(), branchVal: String(branchVal).trim(), waPhone };
+      });
+
+      const hasAnyDriverPhone = enriched.some(x => Boolean(x.waPhone));
+      window.__CURRENT_MODAL_ENRICHED__ = enriched;
+
+      const waToolbarHtml = hasAnyDriverPhone ? `
+        <div class="mb-3 bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex flex-wrap items-center gap-2.5">
+          <span class="text-xs font-black text-emerald-900">💬 واتساب للسائقين:</span>
+          <input type="text" id="modal-wa-msg" value="السلام عليكم كابتن {السائق}، نأمل التواصل بخصوص الشاحنة ({الشاحنة}) - {الفرع}." placeholder="نص الرسالة... ({السائق}، {الشاحنة}، {الفرع})" class="flex-1 min-w-[220px] bg-white border border-emerald-300 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600" />
+          <span id="modal-wa-selected-count" class="px-2.5 py-1 rounded-lg bg-white border border-emerald-300 text-emerald-900 text-xs font-black">المحدد: 0</span>
+          <button type="button" onclick="sendBulkModalWhatsApp()" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-xs flex items-center gap-1">
+            <span>📲</span><span>إرسال للمحددين</span>
+          </button>
+        </div>
+      ` : '';
+
       body.innerHTML = `
+        ${waToolbarHtml}
         <table class="w-full text-xs border-collapse">
           <thead>
             <tr class="bg-slate-100 text-slate-800 border-b border-slate-300 font-black">
+              ${hasAnyDriverPhone ? `<th class="py-2.5 px-2.5 text-center w-9"><input type="checkbox" onchange="toggleAllModalWa(this.checked)" class="w-4 h-4 accent-emerald-600 cursor-pointer" title="تحديد الكل" /></th>` : ''}
               <th class="py-2.5 px-3 text-right">#</th>
+              ${hasAnyDriverPhone ? `<th class="py-2.5 px-3 text-center whitespace-nowrap">مراسلة واتساب</th>` : ''}
               ${cols.map(c => `<th class="py-2.5 px-3 text-right whitespace-nowrap">${c}</th>`).join('')}
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
-            ${rawRows.map((row, i) => `
-              <tr class="hover:bg-slate-50">
-                <td class="py-2 px-3 font-bold text-slate-400">${i + 1}</td>
-                ${cols.map(c => `<td class="py-2 px-3 whitespace-nowrap font-semibold text-slate-800">${row[c] ?? '-'}</td>`).join('')}
-              </tr>
-            `).join('')}
+            ${enriched.map((item, i) => {
+              const safePhone = item.phoneVal.replace(/'/g, "\\'");
+              const safeDriver = item.driverVal.replace(/'/g, "\\'");
+              const safeTruck = item.truckVal.replace(/'/g, "\\'");
+              const safeBranch = item.branchVal.replace(/'/g, "\\'");
+              return `
+                <tr class="hover:bg-slate-50">
+                  ${hasAnyDriverPhone ? `<td class="py-2 px-2.5 text-center"><input type="checkbox" ${item.waPhone ? '' : 'disabled'} onchange="toggleModalWaItem(${i}, this.checked)" class="modal-wa-cb w-4 h-4 accent-emerald-600 cursor-pointer" /></td>` : ''}
+                  <td class="py-2 px-3 font-bold text-slate-400">${i + 1}</td>
+                  ${hasAnyDriverPhone ? `<td class="py-2 px-3 text-center whitespace-nowrap">${item.waPhone ? `<button type="button" onclick="openSingleWhatsApp('${safePhone}', '${safeDriver}', '${safeTruck}', '${safeBranch}', 'modal-wa-msg')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-black shadow-xs">💬 واتساب</button>` : '<span class="text-slate-300">-</span>'}</td>` : ''}
+                  ${cols.map(c => `<td class="py-2 px-3 whitespace-nowrap font-semibold text-slate-800">${item.raw[c] ?? '-'}</td>`).join('')}
+                </tr>
+              `;
+            }).join('')}
           </tbody>
         </table>
       `;
+    }
+
+    function toggleModalWaItem(idx, checked) {
+      if (checked) selectedModalWaIndices.add(idx);
+      else selectedModalWaIndices.delete(idx);
+      const el = document.getElementById('modal-wa-selected-count');
+      if (el) el.textContent = `المحدد: ${selectedModalWaIndices.size}`;
+    }
+
+    function toggleAllModalWa(checked) {
+      selectedModalWaIndices.clear();
+      const list = window.__CURRENT_MODAL_ENRICHED__ || [];
+      document.querySelectorAll('.modal-wa-cb:not(:disabled)').forEach(cb => { cb.checked = checked; });
+      if (checked) {
+        list.forEach((item, idx) => { if (item.waPhone) selectedModalWaIndices.add(idx); });
+      }
+      const el = document.getElementById('modal-wa-selected-count');
+      if (el) el.textContent = `المحدد: ${selectedModalWaIndices.size}`;
+    }
+
+    function sendBulkModalWhatsApp() {
+      if (!selectedModalWaIndices.size) {
+        return showToast('يرجى تحديد سائق واحد على الأقل أولاً', 'error');
+      }
+      const list = window.__CURRENT_MODAL_ENRICHED__ || [];
+      const tpl = document.getElementById('modal-wa-msg')?.value || '';
+      const indices = Array.from(selectedModalWaIndices);
+      indices.forEach((idx, seq) => {
+        const item = list[idx];
+        if (!item || !item.waPhone) return;
+        const text = buildPersonalizedWaText(tpl, item.driverVal, item.truckVal, item.branchVal);
+        setTimeout(() => {
+          window.open(`https://wa.me/${item.waPhone}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+        }, seq * 350);
+      });
+      showToast(`جاري فتح محادثات واتساب لـ ${indices.length} سائق...`);
     }
 
     function openBranchSmartLoads(encodedBranch, truckType) {
