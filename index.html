@@ -4481,7 +4481,14 @@
     // ================== تصدير نسخة HTML محمّلة بالبيانات لتحديث رابط GitHub / Cloudflare ==================
     function downloadPublishedHtmlWithData() {
       const embeddedPayload = buildFullSyncPayload();
-      embeddedPayload.cloudConfig = state.cloudConfig;
+      // تضمين اسم المستودع فقط للقراءة العامة الآمنة دون كشف التوكن في الكود المصدري
+      embeddedPayload.cloudConfig = {
+        enabled: Boolean(state.cloudConfig?.enabled),
+        provider: state.cloudConfig?.provider || 'github',
+        apiKey: '',
+        binId: state.cloudConfig?.binId || 'am400h-design/ALBASSMI-FLEET',
+        lastCloudSync: state.cloudConfig?.lastCloudSync || ''
+      };
 
       const cloneDoc = document.documentElement.cloneNode(true);
       const overlay = cloneDoc.querySelector('#login-overlay');
