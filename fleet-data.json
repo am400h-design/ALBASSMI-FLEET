@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795562138329,
-  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ٢:١٥:٣٨ ص",
+  "updatedAtMs": 1795564064109,
+  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ٢:٤٧:٤٤ ص",
   "refDate": "2026-11-24",
   "tripsRaw": [
     {
@@ -46491,6 +46491,19 @@
       "ملاحظات": ""
     }
   ],
+  "extManualRows": [
+    {
+      "id": "MANUAL_EXT_1795564064003",
+      "clientName": "الامن العام",
+      "bayanRef": "الامن العام",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-24",
+      "truckCount": 10,
+      "truckType": "نقل سيارات",
+      "branch": "مكة المكرمة",
+      "notes": ""
+    }
+  ],
   "fileMeta": {
     "trips": {
       "name": "تقارير بيانات الرحلات - 2026-11-25T020907.809.xlsx",
@@ -46524,7 +46537,11 @@
       "entryDate": "2026-11-17"
     }
   },
-  "extEdits": {},
+  "extEdits": {
+    "سطحات الي الامارات_-_6": {
+      "branch": "الخمرة"
+    }
+  },
   "branchDirectory": [
     {
       "branch": "الرياض القادسية",
