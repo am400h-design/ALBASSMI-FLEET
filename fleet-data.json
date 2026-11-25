@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795593341578,
-  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ١٠:٥٥:٤١ ص",
+  "updatedAtMs": 1795593406968,
+  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ١٠:٥٦:٤٦ ص",
   "refDate": "2026-11-25",
   "tripsRaw": [
     {
@@ -47423,7 +47423,30 @@
     }
   ],
   "extRaw": [],
-  "extManualRows": [],
+  "extManualRows": [
+    {
+      "id": "MANUAL_EXT_1795593383558",
+      "clientName": "شركة هلا السعودية",
+      "bayanRef": "شركة هلا السعودية",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-25",
+      "truckCount": 25,
+      "truckType": "نقل سيارات",
+      "branch": "الخمرة",
+      "notes": ""
+    },
+    {
+      "id": "MANUAL_EXT_1795593406881",
+      "clientName": "شركة العيسائي",
+      "bayanRef": "شركة العيسائي",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-25",
+      "truckCount": 5,
+      "truckType": "نقل سيارات",
+      "branch": "جدة جنوب",
+      "notes": ""
+    }
+  ],
   "fileMeta": {
     "trips": {
       "name": "تقارير بيانات الرحلات - 2026-11-25T101719.261.xlsx",
