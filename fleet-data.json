@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795608053027,
-  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ٣:٠٠:٥٣ م",
+  "updatedAtMs": 1795608131523,
+  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ٣:٠٢:١١ م",
   "refDate": "2026-11-25",
   "tripsRaw": [
     {
@@ -47562,6 +47562,39 @@
       "truckCount": 17,
       "truckType": "نقل سيارات",
       "branch": "الخمرة",
+      "notes": ""
+    },
+    {
+      "id": "MANUAL_EXT_1795608077425",
+      "clientName": "شركة استار لينك  لوكل من ميناء جده الي الجموم",
+      "bayanRef": "شركة استار لينك  لوكل من ميناء جده الي الجموم",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-25",
+      "truckCount": 20,
+      "truckType": "نقل سيارات",
+      "branch": "الخمرة",
+      "notes": ""
+    },
+    {
+      "id": "MANUAL_EXT_1795608093386",
+      "clientName": "شركة تويوتا",
+      "bayanRef": "شركة تويوتا",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-25",
+      "truckCount": 7,
+      "truckType": "نقل سيارات",
+      "branch": "الدمام",
+      "notes": ""
+    },
+    {
+      "id": "MANUAL_EXT_1795608131424",
+      "clientName": "لوابد من الخفجي الي  الرياض",
+      "bayanRef": "لوابد من الخفجي الي  الرياض",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-25",
+      "truckCount": 8,
+      "truckType": "سطحات كبيرة",
+      "branch": "الدمام",
       "notes": ""
     }
   ],
