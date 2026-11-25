@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795607991824,
-  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ٢:٥٩:٥١ م",
+  "updatedAtMs": 1795608053027,
+  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ٣:٠٠:٥٣ م",
   "refDate": "2026-11-25",
   "tripsRaw": [
     {
@@ -47551,6 +47551,17 @@
       "truckCount": 3,
       "truckType": "نقل سيارات",
       "branch": "جدة جنوب",
+      "notes": ""
+    },
+    {
+      "id": "MANUAL_EXT_1795608052929",
+      "clientName": "شركة الناغي لوكل من الميناء الي المستودع",
+      "bayanRef": "شركة الناغي لوكل من الميناء الي المستودع",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-25",
+      "truckCount": 17,
+      "truckType": "نقل سيارات",
+      "branch": "الخمرة",
       "notes": ""
     }
   ],
