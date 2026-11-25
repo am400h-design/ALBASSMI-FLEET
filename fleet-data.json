@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795593090800,
-  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ١٠:٥١:٣٠ ص",
+  "updatedAtMs": 1795593341578,
+  "exportedAt": "٢٥‏/١١‏/٢٠٢٦، ١٠:٥٥:٤١ ص",
   "refDate": "2026-11-25",
   "tripsRaw": [
     {
@@ -47423,19 +47423,7 @@
     }
   ],
   "extRaw": [],
-  "extManualRows": [
-    {
-      "id": "MANUAL_EXT_1795564064003",
-      "clientName": "الامن العام",
-      "bayanRef": "الامن العام",
-      "truckCodeRef": "",
-      "scheduleStartDate": "2026-11-24",
-      "truckCount": 10,
-      "truckType": "نقل سيارات",
-      "branch": "مكة المكرمة",
-      "notes": ""
-    }
-  ],
+  "extManualRows": [],
   "fileMeta": {
     "trips": {
       "name": "تقارير بيانات الرحلات - 2026-11-25T101719.261.xlsx",
