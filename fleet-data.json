@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795682942540,
-  "exportedAt": "٢٦‏/١١‏/٢٠٢٦، ١١:٤٩:٠٢ ص",
+  "updatedAtMs": 1795687017675,
+  "exportedAt": "٢٦‏/١١‏/٢٠٢٦، ١٢:٥٦:٥٧ م",
   "refDate": "2026-11-26",
   "tripsRaw": [
     {
@@ -49856,7 +49856,19 @@
     }
   ],
   "extRaw": [],
-  "extManualRows": [],
+  "extManualRows": [
+    {
+      "id": "MANUAL_EXT_1795687017477",
+      "clientName": "تويوتا الجملة",
+      "bayanRef": "تويوتا الجملة",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-26",
+      "truckCount": 4,
+      "truckType": "نقل سيارات",
+      "branch": "الخمرة",
+      "notes": ""
+    }
+  ],
   "fileMeta": {
     "trips": {
       "name": "تقارير بيانات الرحلات - 2026-11-26T104211.014.xlsx",
