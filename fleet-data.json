@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795687017675,
-  "exportedAt": "٢٦‏/١١‏/٢٠٢٦، ١٢:٥٦:٥٧ م",
+  "updatedAtMs": 1795688845175,
+  "exportedAt": "٢٦‏/١١‏/٢٠٢٦، ١:٢٧:٢٥ م",
   "refDate": "2026-11-26",
   "tripsRaw": [
     {
@@ -49864,6 +49864,17 @@
       "truckCodeRef": "",
       "scheduleStartDate": "2026-11-26",
       "truckCount": 4,
+      "truckType": "نقل سيارات",
+      "branch": "الخمرة",
+      "notes": ""
+    },
+    {
+      "id": "MANUAL_EXT_1795688845025",
+      "clientName": "تويوتا الافراد",
+      "bayanRef": "تويوتا الافراد",
+      "truckCodeRef": "",
+      "scheduleStartDate": "2026-11-26",
+      "truckCount": 6,
       "truckType": "نقل سيارات",
       "branch": "الخمرة",
       "notes": ""
