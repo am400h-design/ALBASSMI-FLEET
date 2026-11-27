@@ -1,6 +1,6 @@
 {
-  "updatedAtMs": 1795776400858,
-  "exportedAt": "٢٧‏/١١‏/٢٠٢٦، ١:٤٦:٤٠ م",
+  "updatedAtMs": 1795814634751,
+  "exportedAt": "٢٨‏/١١‏/٢٠٢٦، ١٢:٢٣:٥٤ ص",
   "refDate": "2026-11-27",
   "tripsRaw": [
     {
@@ -61402,6 +61402,9 @@
         "deficit",
         "delayed",
         "pdf"
+      ],
+      "actions": [
+        "excel"
       ]
     }
   ],
