@@ -1,7 +1,7 @@
 {
-  "updatedAtMs": 1795701516243,
-  "exportedAt": "٢٦‏/١١‏/٢٠٢٦، ٤:٥٨:٣٦ م",
-  "refDate": "2026-11-26",
+  "updatedAtMs": 1795773011576,
+  "exportedAt": "٢٧‏/١١‏/٢٠٢٦، ١٢:٥٠:١١ م",
+  "refDate": "2026-11-27",
   "tripsRaw": [
     {
       "كـود الشاحــنة": "5516",
@@ -68423,39 +68423,6 @@
   ],
   "extRaw": [],
   "extManualRows": [
-    {
-      "id": "MANUAL_EXT_1795687017477",
-      "clientName": "تويوتا الجملة",
-      "bayanRef": "تويوتا الجملة",
-      "truckCodeRef": "",
-      "scheduleStartDate": "2026-11-26",
-      "truckCount": 4,
-      "truckType": "نقل سيارات",
-      "branch": "الخمرة",
-      "notes": ""
-    },
-    {
-      "id": "MANUAL_EXT_1795688845025",
-      "clientName": "تويوتا الافراد",
-      "bayanRef": "تويوتا الافراد",
-      "truckCodeRef": "",
-      "scheduleStartDate": "2026-11-26",
-      "truckCount": 6,
-      "truckType": "نقل سيارات",
-      "branch": "الخمرة",
-      "notes": ""
-    },
-    {
-      "id": "MANUAL_EXT_1795688854407",
-      "clientName": "الناغي",
-      "bayanRef": "الناغي",
-      "truckCodeRef": "",
-      "scheduleStartDate": "2026-11-26",
-      "truckCount": 4,
-      "truckType": "نقل سيارات",
-      "branch": "الخمرة",
-      "notes": ""
-    },
     {
       "id": "MANUAL_EXT_1795688880024",
       "clientName": "استار لينك لوكل",
